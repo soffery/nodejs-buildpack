@@ -18,15 +18,15 @@ set_a_side_original_node_modules() {
   local build_dir=${1:-}
   # create original files in the app directory , so we can revert back to the 
   # original application, if the user ask for it.
-  if [! -e $build_dir/node_modules.orig ] ; then 
+  if [ ! -e $build_dir/node_modules.orig ] ; then 
 	cp $build_dir/node_modules $build_dir/node_modules.orig || true
 	echo "set a side original node_modules directory..."
   fi
-  if [! -e $build_dir/npm-shrinkwrap.json ] ; then 
+  if [ ! -e $build_dir/npm-shrinkwrap.json ] ; then 
 	cp $build_dir/npm-shrinkwrap.json $build_dir/npm-shrinkwrap.json.orig || true
     echo "set a side original npm-shrinkwrap.json..."
   fi
-  if [! -e $build_dir/package.json.orig ] ; then 
+  if [ ! -e $build_dir/package.json.orig ] ; then 
 	cp $build_dir/package.json $build_dir/package.json.orig || true
     echo "set a side original package.json..."
   fi
