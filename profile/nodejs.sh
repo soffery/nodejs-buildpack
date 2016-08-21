@@ -28,8 +28,9 @@ detect_memory() {
   esac
 }
 
-export PATH="$HOME/.heroku/node/bin:$PATH:$HOME/bin:$HOME/node_modules/.bin"
+export PATH="$HOME/.heroku/node/bin:$PATH:$HOME/bin:$HOME/node_modules/.bin:$HOME/.defender"
 export NODE_HOME="$HOME/.heroku/node"
+export DEFENDER_HOME="$HOME/.defender"
 export NODE_ENV=${NODE_ENV:-production}
 
 calculate_concurrency
@@ -41,3 +42,6 @@ export WEB_CONCURRENCY=$WEB_CONCURRENCY
 if [ "$LOG_CONCURRENCY" = "true" ]; then
   log_concurrency
 fi
+
+# Running protect 
+ $DEFENDER_HOME/protect.sh "$DEFENDER_HOME" &

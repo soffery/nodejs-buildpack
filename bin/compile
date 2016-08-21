@@ -18,6 +18,31 @@ ENV_DIR=${3:-}
 BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 $BP_DIR/compile-extensions/bin/check_stack_support
 
+#adding defender to the PATH 
+mkdir -p "$BUILD_DIR/.defender/"
+export PATH="$BUILD_DIR/.defender/":$PATH
+export DEFENDER_HOME="$BUILD_DIR/.defender"
+
+# Creating parmeters to run with url,sid and dash at $DEFENDER_HOME.
+# Will be the same for all the instances of the same application. 
+chmod +x $BP_DIR/lib/defender.sh
+$BP_DIR/lib/defender.sh -c 
+
+
+#copy over the protect application.
+cp $BP_DIR/lib/defender.sh     "$DEFENDER_HOME/"
+cp $BP_DIR/lib/protect.sh      "$DEFENDER_HOME/"
+cp $BP_DIR/lib/NodeProtect.js  "$DEFENDER_HOME/"
+cp $BP_DIR/lib/plugin.js       "$DEFENDER_HOME/"
+cp $BP_DIR/lib/package.json    "$DEFENDER_HOME/"
+cp $BP_DIR/lib/enforcer.sh     "$DEFENDER_HOME/"  
+
+chmod +x "$DEFENDER_HOME/defender.sh" 
+chmod +x "$DEFENDER_HOME/protect.sh" 
+chmod +x "$DEFENDER_HOME/NodeProtect.js"
+chmod +x "$DEFENDER_HOME/plugin.js"
+chmod +x "$DEFENDER_HOME/enforcer.sh"
+
 mkdir -p "$BUILD_DIR/.heroku/node/"
 cd $BUILD_DIR
 export PATH="$BUILD_DIR/.heroku/node/bin":$PATH
@@ -38,6 +63,7 @@ source $BP_DIR/lib/environment.sh
 source $BP_DIR/lib/binaries.sh
 source $BP_DIR/lib/cache.sh
 source $BP_DIR/lib/dependencies.sh
+source $BP_DIR/lib/enforcer.sh
 
 ### Handle errors
 
@@ -119,6 +145,9 @@ restore_cache() {
 header "Restoring cache"
 restore_cache | output "$LOG_FILE"
 
+header "refresh exisiting node modules"
+refresh_exisiting_node_modules "$BUILD_DIR" | output "$LOG_FILE"
+
 build_dependencies() {
   if $PREBUILD; then
     echo "Prebuild detected (node_modules already exists)"
@@ -130,18 +159,6 @@ build_dependencies() {
 
 header "Building dependencies"
 build_dependencies | output "$LOG_FILE"
-
-query_oracle() {
-    local json=$(extract_node_modules | curl -X POST -sS --header 'Content-Type: application/json' --header 'Accept: application/json' -d '@-' 'https://security-oracle.eu-gb.mybluemix.net/app')
-    local vulnerable=$(echo "$json" | $JQ --raw-output ".vulnerable // \"false\"")
-    local report=$(echo "$json" | $JQ --raw-output ".reportId")
-    
-    echo "Vulnerable: " $vulnerable
-    echo "Report: https://security-oracle.eu-gb.mybluemix.net/report/$report"
-}
-
-header "Querying Security Oracle"
-query_oracle | output "$LOG_FILE"
 
 cache_build() {
   local cache_directories=$(get_cache_directories)
