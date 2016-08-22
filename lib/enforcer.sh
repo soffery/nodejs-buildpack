@@ -27,7 +27,7 @@ set_a_side_original_node_modules() {
   # create original files in the app directory , so we can revert back to the 
   # original application, if the user ask for it. this is done ONLY ONCE at startup.
   if [  \( ! -e $build_dir/node_modules.orig \) -a \( -e $build_dir/node_modules \) ] ; then 
-	cp $build_dir/node_modules $build_dir/node_modules.orig || true
+	cp -r $build_dir/node_modules $build_dir/node_modules.orig || true
 	echo "set a side original node_modules directory..."
   fi
   if [ ! -e $build_dir/npm-shrinkwrap.json.orig -a -e $build_dir/npm-shrinkwrap.json  ] ; then 
