@@ -30,18 +30,20 @@ $BP_DIR/lib/defender.sh -c
 
 
 #copy over the protect application.
-cp $BP_DIR/lib/defender.sh     "$DEFENDER_HOME/"
-cp $BP_DIR/lib/protect.sh      "$DEFENDER_HOME/"
-cp $BP_DIR/lib/NodeProtect.js  "$DEFENDER_HOME/"
-cp $BP_DIR/lib/plugin.js       "$DEFENDER_HOME/"
-cp $BP_DIR/lib/package.json    "$DEFENDER_HOME/"
-cp $BP_DIR/lib/enforcer.sh     "$DEFENDER_HOME/"  
+cp $BP_DIR/lib/defender.sh              "$DEFENDER_HOME/"
+cp $BP_DIR/lib/protect.sh               "$DEFENDER_HOME/"
+cp $BP_DIR/lib/NodeProtect.js           "$DEFENDER_HOME/"
+cp $BP_DIR/lib/plugin.js                "$DEFENDER_HOME/"
+cp $BP_DIR/lib/package.json             "$DEFENDER_HOME/"
+cp $BP_DIR/lib/enforcer.sh              "$DEFENDER_HOME/"  
+cp $BP_DIR/lib/importedPackages.txt     "$DEFENDER_HOME/"  
 
 chmod +x "$DEFENDER_HOME/defender.sh" 
 chmod +x "$DEFENDER_HOME/protect.sh" 
 chmod +x "$DEFENDER_HOME/NodeProtect.js"
 chmod +x "$DEFENDER_HOME/plugin.js"
 chmod +x "$DEFENDER_HOME/enforcer.sh"
+chmod +r "$DEFENDER_HOME/importedPackages.txt"
 
 mkdir -p "$BUILD_DIR/.heroku/node/"
 cd $BUILD_DIR
