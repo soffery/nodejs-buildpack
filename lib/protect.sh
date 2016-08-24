@@ -1,5 +1,5 @@
 
-sleep 120
+sleep 12
 
 # install node modules for the nodejs files in defender dir 
 cd $DEFENDER_HOME
@@ -86,7 +86,7 @@ extract_node_modules() {
 	cat $DEFENDER_HOME/distro.json | node $DEFENDER_HOME/NodeProtect.js  
 }    
 
-read_imported packages(){
+read_imported_packages(){
   export ret=""
 
 }
