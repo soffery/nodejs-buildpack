@@ -78,6 +78,6 @@ revert_to_old(){
 
 }
 
-package_json_update(){
+#package_json_update(){
  # change the json file 
-}
+#}
