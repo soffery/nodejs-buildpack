@@ -77,3 +77,7 @@ revert_to_old(){
   echo "moved one step back ..."
 
 }
+
+package_json_update(){
+ # change the json file 
+}
