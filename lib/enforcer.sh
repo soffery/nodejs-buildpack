@@ -79,7 +79,8 @@ revert_to_old(){
 }
 
 package_json_update(){
-#change the json file to "^{Version}" , where {Version} is what found in the "npm-shrinkwrap.json" file.
+	#change the json file to "^{Version}" , where {Version} is what found in the "npm-shrinkwrap.json" file.
+	local build_dir=${1:-}
 	if [ ! -e $build_dir/npm-shrinkwrap.json ] ; then 
 		npm shrinkwrap
 		if [ $? != 0 ]; then 
@@ -99,15 +100,15 @@ package_json_update(){
  
 	# take from the package.json file the list of pakages that need to be updates at production run 
 	# NOTE: what about developmet stage ? 
-	export DEP_PKG_LIST=`jq  '.dependencies | to_entries | .[].key  ' package.json | sed 's/"//g; s/://g'`
+	export DEP_PKG_LIST=`jq  '.dependencies | to_entries | .[].key  ' $build_dir/package.json | sed 's/"//g; s/://g'`
 
 
 	for dep_pkg in $DEP_PKG_LIST; do 
 		# for each package get the current version as seen by the "npm shrinkwrap" command
 		# add for it the general mark "^" which in npm languge allow some freedom for an upgrade of the package
-		local dep_pkg_version=`jq '.dependencies[] ' npm-shrinkwrap.json | grep -B 2 ${dep_pkg}@  | grep version | awk '{ print $2 }' | sed 's/,// ; s/^"/"^/'`
+		local dep_pkg_version=`jq '.dependencies[] ' $build_dir/npm-shrinkwrap.json | grep -B 2 ${dep_pkg}@  | grep version | awk '{ print $2 }' | sed 's/,// ; s/^"/"^/'`
 		#update the package.json to allowed freedom. 
-		jq ".dependencies.${dep_pkg} = $dep_pkg_version " package.json > package.json.new
-		mv package.json.new package.json
+		jq ".dependencies.${dep_pkg} = $dep_pkg_version " $build_dir/package.json > $build_dir/package.json.new
+		mv $build_dir/package.json.new $build_dir/package.json
 	done 	
 }
