@@ -61,7 +61,6 @@ revert_to_original(){
 
 }
 
-
 revert_to_old(){
   local build_dir=${1:-}
   # move to original files in the app directory ,reverting back to the 
@@ -133,7 +132,7 @@ case "$1" in
          
         *)
             echo $"Usage: $0 {reinstall_packages|update_packages|undo_all_updates|undo_last_update|}"
-            exit 1
+            exit 0
  
 esac
 
