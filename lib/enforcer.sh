@@ -1,3 +1,5 @@
+#/bin/bash
+
 refresh_exisiting_node_modules() {
   local build_dir=${1:-}
 
@@ -112,3 +114,26 @@ package_json_update(){
 		mv $build_dir/package.json.new $build_dir/package.json
 	done 	
 }
+
+case "$1" in
+        reinstall_packages)
+            reinstall_packages $2
+            ;;
+         
+        update_packages)
+            update_packages $2
+            ;;
+         
+        undo_all_updates)
+            undo_all_updates $2 
+            ;;
+        undo_last_update)
+            undo_last_update $2
+            ;;
+         
+        *)
+            echo $"Usage: $0 {reinstall_packages|update_packages|undo_all_updates|undo_last_update|}"
+            exit 1
+ 
+esac
+
