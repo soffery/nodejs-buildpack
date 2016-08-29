@@ -132,6 +132,7 @@ case "$1" in
          
         *)
             echo $"Usage: $0 {reinstall_packages|update_packages|undo_all_updates|undo_last_update|}"
+			env 
             exit 0
  
 esac
