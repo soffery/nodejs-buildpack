@@ -112,7 +112,7 @@ package_json_update(){
 	done 	
 }
 
-enforce {
+enforce() {
     # enforcer start 
 	local build_dir=$1 
 	if [ -e ${DEFENDER_HOME}/action.txt ] ;  then
