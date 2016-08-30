@@ -147,9 +147,6 @@ restore_cache() {
 header "Restoring cache"
 restore_cache | output "$LOG_FILE"
 
-header "refresh exisiting node modules"
-refresh_exisiting_node_modules "$BUILD_DIR" | output "$LOG_FILE"
-
 build_dependencies() {
   if $PREBUILD; then
     echo "Prebuild detected (node_modules already exists)"
@@ -184,7 +181,7 @@ cache_build | output "$LOG_FILE"
 
 # enforcer user action from blueSecure 
 header "enforcing build actions"
-enforce $build_dir
+enforce "$BUILD_DIR" | output "$LOG_FILE"
 
 summarize_build() {
   cd $BUILD_DIR
