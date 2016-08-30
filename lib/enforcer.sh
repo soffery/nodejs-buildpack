@@ -1,10 +1,8 @@
 #/bin/bash
 
-refresh_exisiting_node_modules() {
+reinstall_packages() {
   local build_dir=${1:-}
-
-  set_a_side_original_node_modules $build_dir
-  
+ 
   # last back up - if the user need to go back one step
   if [ -e $build_dir/node_modules  ] ; then 
 	mv $build_dir/node_modules $build_dir/node_modules.old || true
@@ -43,7 +41,7 @@ set_a_side_original_node_modules() {
   
 }
 
-revert_to_original(){
+undo_all_updates(){
   local build_dir=${1:-}
   # move to original files in the app directory ,reverting back to the 
   # as in the original application, if the user ask for it.
@@ -61,7 +59,7 @@ revert_to_original(){
 
 }
 
-revert_to_old(){
+undo_last_update(){
   local build_dir=${1:-}
   # move to original files in the app directory ,reverting back to the 
   # as in the original application, if the user ask for it.
@@ -114,26 +112,43 @@ package_json_update(){
 	done 	
 }
 
-case "$1" in
+enforce {
+    # enforcer start 
+	local build_dir=$1 
+	if [ -e ${DEFENDER_HOME}/action.txt ] ;  then
+	    # NOTE : we can handle a list of actions here - now only handling one action ,only.
+		local action=`cat action.txt| head -n 1`
+	fi
+	# if there is no user action 
+	if [ -z "$action" ] ; then 
+	   return ; 
+	fi 
+	
+	# need to be run at least once 
+	set_a_side_original_node_modules $build_dir
+	
+	case "$1" in
         reinstall_packages)
-            reinstall_packages $2
+            reinstall_packages $build_dir
             ;;
          
         update_packages)
-            update_packages $2
+            package_json_update $build_dir
+			reinstall_packages $build_dir
             ;;
          
         undo_all_updates)
-            undo_all_updates $2 
+            undo_all_updates $build_dir
             ;;
         undo_last_update)
-            undo_last_update $2
+            undo_last_update $build_dir
             ;;
          
         *)
             echo $"Usage: $0 {reinstall_packages|update_packages|undo_all_updates|undo_last_update|}"
-			env 
+			#env 
             exit 0
  
-esac
+	esac
 
+}

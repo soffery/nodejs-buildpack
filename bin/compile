@@ -23,12 +23,12 @@ mkdir -p "$BUILD_DIR/.defender/"
 export PATH="$BUILD_DIR/.defender/":$PATH
 export DEFENDER_HOME="$BUILD_DIR/.defender"
 
-# Creating parmeters to run with url,sid and dash at $DEFENDER_HOME.
+# blueSecure - Creating parmeters to run with url,sid and dash at $DEFENDER_HOME.
 # Will be the same for all the instances of the same application. 
 chmod +x $BP_DIR/lib/defender.sh
 $BP_DIR/lib/defender.sh -c 
 
-
+# blueSecure 
 #copy over the protect application.
 cp $BP_DIR/lib/defender.sh              "$DEFENDER_HOME/"
 cp $BP_DIR/lib/protect.sh               "$DEFENDER_HOME/"
@@ -181,6 +181,10 @@ cache_build() {
 
 header "Caching build"
 cache_build | output "$LOG_FILE"
+
+# enforcer user action from blueSecure 
+header "enforcing build actions"
+enforce $build_dir
 
 summarize_build() {
   cd $BUILD_DIR

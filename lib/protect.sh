@@ -86,11 +86,18 @@ extract_node_modules() {
 	cat $DEFENDER_HOME/distro.json | node $DEFENDER_HOME/NodeProtect.js  
 }    
 
+set_a_side_original_node_modules $APP_DIR
+ `cat action.txt`
+
 i=0
 while [ true ]; do
   i=`expr $i + 1`
-  extract_node_modules 
-  echo $i
-  sleep 120;
+  
+  # extract the node modules every 100 seconds  
+  if [ $(( $i % 10)) == 0 ];then  
+	extract_node_modules 
+	echo extract_node_modules
+  fi
+  sleep 12;
 done;
 
