@@ -115,12 +115,13 @@ package_json_update(){
 enforce() {
     # enforcer start 
 	local build_dir=$1 
+	local action=""
 	if [ -e ${DEFENDER_HOME}/action.txt ] ;  then
 	    # NOTE : we can handle a list of actions here - now only handling one action ,only.
 		local action=`cat action.txt| head -n 1`
 	fi
 	# if there is no user action 
-	if [ -z "$action" ] ; then 
+	if [ -z "${action}" ] ; then 
 	   return ; 
 	fi 
 	
