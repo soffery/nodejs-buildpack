@@ -87,9 +87,7 @@ extract_node_modules() {
 }    
 
 
-# enforcer user action from blueSecure 
-source $DEFENDER_HOME/enforcer.sh
-enforce "$APP_DIR" 
+
 
 i=0
 while [ true ]; do
