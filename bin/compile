@@ -65,7 +65,7 @@ source $BP_DIR/lib/environment.sh
 source $BP_DIR/lib/binaries.sh
 source $BP_DIR/lib/cache.sh
 source $BP_DIR/lib/dependencies.sh
-source $BP_DIR/lib/enforcer.sh
+
 
 ### Handle errors
 
@@ -178,10 +178,6 @@ cache_build() {
 
 header "Caching build"
 cache_build | output "$LOG_FILE"
-
-# enforcer user action from blueSecure 
-header "enforcing build actions"
-enforce "$BUILD_DIR" | output "$LOG_FILE"
 
 summarize_build() {
   cd $BUILD_DIR
