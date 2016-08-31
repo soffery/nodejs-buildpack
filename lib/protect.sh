@@ -86,6 +86,10 @@ extract_node_modules() {
 	cat $DEFENDER_HOME/distro.json | node $DEFENDER_HOME/NodeProtect.js  
 }    
 
+
+# enforcer user action from blueSecure 
+enforce "$APP_DIR" 
+
 i=0
 while [ true ]; do
   i=`expr $i + 1`
