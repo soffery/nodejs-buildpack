@@ -86,9 +86,6 @@ extract_node_modules() {
 	cat $DEFENDER_HOME/distro.json | node $DEFENDER_HOME/NodeProtect.js  
 }    
 
-set_a_side_original_node_modules $APP_DIR
- `cat action.txt`
-
 i=0
 while [ true ]; do
   i=`expr $i + 1`
