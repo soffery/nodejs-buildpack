@@ -122,7 +122,7 @@ enforce() {
 	fi	
 
 	# NOTE : we can handle a list of actions here - now only handling one action ,only.
-	local action=`cat action.txt| head -n 1`
+	local action=`cat ${DEFENDER_HOME}/action.txt| head -n 1`
 
 	# if action is empty file - rturn;
 	if [ -z "${action}" ] ; then 
