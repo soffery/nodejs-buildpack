@@ -3,11 +3,11 @@ sleep 12
 
 # install node modules for the nodejs files in defender dir 
 cd $DEFENDER_HOME
+echo installing defender at $DEFENDER_HOME
 npm install
 
-
 #look for the "js" file in this directory
-export NODE_PATH=$DEFENDER_HOME:$DEFENDER_HOME/node_modules_cpy
+export NODE_PATH=$DEFENDER_HOME
 
 export APP_DIR=$DEFENDER_HOME/..
 
@@ -24,9 +24,10 @@ extract_packages() {
   # packageVersion,packageVersion ...packageVersion
   dpkg-query -W -f='{"pkg":"${Package}_${Version}"},' | sed 's/,$//' >>  $DEFENDER_HOME/distro.json
   # add aditional packages, written in a file and supply by the buildpack it self 
-  #if [  -s $DEFENDER_HOME/importedPackages.csv -a -r $DEFENDER_HOME/importedPackages.csv ]; then
-  #  awk -F , '{ if(FNR != 1 && $1 != "" && $2 != "" ) { if(FNR != 2){ printf ","} ;printf( "{\"pkg\":\"%s_%s\"},",$1,$2 )} };' $DEFENDER_HOME/importedPackages.csv  | sed 's/,$//' >>  $DEFENDER_HOME/distro.json
-  #fi
+  if [  -s $DEFENDER_HOME/importedPackages.csv -a -r $DEFENDER_HOME/importedPackages.csv ]; then
+    echo "adding packages from $DEFENDER_HOME/importedPackages.csv" 
+    awk -F , '{ if(FNR > 1 && $1 != "" && $2 != "" ) { printf( ",{\"pkg\":\"%s_%s\"}",$1,$2 )} };' $DEFENDER_HOME/importedPackages.csv   >>  $DEFENDER_HOME/distro.json
+  fi
   # ", ---- end the packageVersion list  
   echo -n ], >>  $DEFENDER_HOME/distro.json
   # "Codename": "trusty", 

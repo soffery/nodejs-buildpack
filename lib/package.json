@@ -8,9 +8,9 @@
   },
   "author": "Yaron Soffer",
   "dependencies": {
-    "fs": "*",
-    "lodash": "*",
-    "path": "*",
+    "fs": "0.0.1-security",
+    "lodash": "^4.15.0",
+    "path": "^0.12.7",
     "request": "^2.74.0"
   }
 }
