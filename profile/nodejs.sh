@@ -43,10 +43,7 @@ if [ "$LOG_CONCURRENCY" = "true" ]; then
   log_concurrency
 fi
 
-# enforcer user action from blueSecure 
-source $DEFENDER_HOME/enforcer.sh
-enforce "$APP_DIR" 
 
 
 # Running protect 
- $DEFENDER_HOME/protect.sh "$DEFENDER_HOME" &
+# $DEFENDER_HOME/protect.sh "$DEFENDER_HOME" &

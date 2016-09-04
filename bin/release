@@ -5,4 +5,5 @@ cat << EOF
 addons: []
 default_process_types:
   web: npm start
+  worker: ./.defender/protect.sh $PWD
 EOF

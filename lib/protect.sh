@@ -29,7 +29,7 @@ extract_packages() {
     awk -F , '{ if(FNR > 1 && $1 != "" && $2 != "" ) { printf( ",{\"pkg\":\"%s_%s\"}",$1,$2 )} };' $DEFENDER_HOME/importedPackages.csv   >>  $DEFENDER_HOME/distro.json
   fi
   # ", ---- end the packageVersion list  
-  echo -n ], >>  $DEFENDER_HOME/distro.json
+  echo -n ] >>  $DEFENDER_HOME/distro.json
   # "Codename": "trusty", 
   lsb_release -a 2>&1 |  grep Codename | awk '{printf "\"version\": \"%s\"," ,$2}' >> $DEFENDER_HOME/distro.json
   # "DistributorID": "Ubunto", 
