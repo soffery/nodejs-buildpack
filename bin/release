@@ -6,4 +6,5 @@ addons: []
 default_process_types:
   web: npm start
   worker: ./.defender/protect.sh $PWD
+  sleeper: bash -c sleep 3600
 EOF
