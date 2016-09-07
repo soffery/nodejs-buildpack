@@ -1,5 +1,5 @@
 
-sleep 12
+
 
 # install node modules for the nodejs files in defender dir 
 cd $DEFENDER_HOME
@@ -87,9 +87,15 @@ extract_node_modules() {
 	cat $DEFENDER_HOME/distro.json | node $DEFENDER_HOME/NodeProtect.js  
 }    
 
+if [ $2 = "runonce" ] ; then 
+	extract_node_modules 
+	echo extract_node_modules
+	source "$DEFENDER_HOME/enforcer.sh"
+	enforce `cat $DEFENDER_HOME/action.txt`
+	exit 0;
+fi
 
-
-
+sleep 12
 i=0
 while [ true ]; do
   i=`expr $i + 1`
