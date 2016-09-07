@@ -86,7 +86,7 @@ extract_node_modules() {
 }    
 
 
-extract_node_modules 
-echo extract_node_modules
+#extract_node_modules 
+#echo extract_node_modules
 
 npm start
