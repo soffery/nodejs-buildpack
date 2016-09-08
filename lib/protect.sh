@@ -93,9 +93,7 @@ extract_node_modules() {
 #NOTE the "e" at the end is to avoid empty string comparision
 if [ "${2}e" = "runoncee" ] ; then 
 	extract_node_modules 
-	echo extract_node_modules
-	source "$DEFENDER_HOME/enforcer.sh"
-	enforce `cat $DEFENDER_HOME/action.txt`
+	echo extract_node_modules once
 	exit 0;
 fi
 #Run forever 

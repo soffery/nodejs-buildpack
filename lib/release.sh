@@ -7,8 +7,9 @@ echo `cat ${DEFENDER_HOME}/dash ${DEFENDER_HOME}/sid `
 
 ${DEFENDER_HOME}/protect.sh ${DEFENDER_HOME} "runonce"
 if [ -f ${DEFENDER_HOME}/action.txt ] ; then 
+    echo `cat ${DEFENDER_HOME}/action.txt`
 	source ${DEFENDER_HOME}/enforcer.sh
 	enforce `cat ${DEFENDER_HOME}/action.txt`
 fi 	
-
+echo " running --> npm start"
 npm start
