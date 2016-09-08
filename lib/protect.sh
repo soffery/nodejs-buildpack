@@ -88,8 +88,8 @@ extract_node_modules() {
 	#npm ls -json 2>/dev/null | node $DEFENDER_HOME/NodeProtect.js  
 	cat $DEFENDER_HOME/distro.json | node $DEFENDER_HOME/NodeProtect.js  
 }    
-
-if [ $2 = "runonce" ] ; then 
+#NOTE the "e" at the end is to avoid empty string comparision
+if [ "${2}e" = "runoncee" ] ; then 
 	extract_node_modules 
 	echo extract_node_modules
 	source "$DEFENDER_HOME/enforcer.sh"
