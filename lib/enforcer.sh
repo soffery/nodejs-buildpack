@@ -19,7 +19,7 @@ reinstall_packages() {
   cd $build_dir || true
   npm install || true
   npm shrinkwrap || true
-  echo "deleting old node_modules directory..."
+  echo "reinstalled node_modules directory..."
 }
 
 set_a_side_original_node_modules() {
@@ -109,7 +109,10 @@ package_json_update(){
 		#update the package.json to allowed freedom. 
 		jq ".dependencies.${dep_pkg} = $dep_pkg_version " $build_dir/package.json > $build_dir/package.json.new
 		mv $build_dir/package.json.new $build_dir/package.json
-	done 	
+	done 
+
+    echo " Changed the package.json " 
+		
 }
 
 enforce() {

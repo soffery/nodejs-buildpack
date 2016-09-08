@@ -8,16 +8,12 @@ do
 
   case $key in
     -c|--clean)
-	if [ -f ${DEFENDER_HOME}/sid ]; then
+       if [ -f ${DEFENDER_HOME}/sid ]; then
 		rm ${DEFENDER_HOME}/sid || true
-	fi		
-    cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 32 > ${DEFENDER_HOME}/sid
-    if [ ! -f ${DEFENDER_HOME}/url ]; then
-       echo -n "https://bluesecure.mybluemix.net" > ${DEFENDER_HOME}/url
-    fi
-    if [ ! -f ${DEFENDER_HOME}/dash ]; then
-       echo -n "https://bluesecuredashboard.mybluemix.net?channel=" > ${DEFENDER_HOME}/dash
-    fi
+       fi
+       cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 32 > ${DEFENDER_HOME}/sid || true
+       echo -n "https://bluesecure.mybluemix.net" > ${DEFENDER_HOME}/url || true
+       echo -n "https://bluesecuredashboard.mybluemix.net?channel=" > ${DEFENDER_HOME}/dash || true
     ;;
     *)
        # unknown option
