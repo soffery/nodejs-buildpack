@@ -57,15 +57,15 @@ shrinkwrap_json() {
 }
 
 package_json(){
-   cd $APP_DIR
-   if [ -f package.json ] ; then 
-     echo -n \"packagejson\" :  >>  $DEFENDER_HOME/distro.json
-	 cat package.json >>  $DEFENDER_HOME/distro.json
-   else 
-     echo "Error : could not find  package.json";
-	 #  generate an empty one.
-	 echo -n \"packagejson\" : {}  >> $DEFENDER_HOME/distro.json
-   fi 
+	cd $APP_DIR
+	if [ -f package.json ] ; then 
+		echo -n \"packagejson\" :  >>  $DEFENDER_HOME/distro.json
+		cat package.json >>  $DEFENDER_HOME/distro.json
+	else 
+		echo "Error : could not find  package.json";
+		#  generate an empty one.
+		echo -n \"packagejson\" : {}  >> $DEFENDER_HOME/distro.json
+	fi 
 }
 nodejs_section(){
 	echo -n \"nodejs\" : { >>  $DEFENDER_HOME/distro.json
@@ -83,6 +83,8 @@ extract_node_modules() {
 	nodejs_section
 	close_json
 	cd $APP_DIR
+	#need to to wipe out the action.txt file - so an old operation will not be used.
+	rm -f $DEFENDER_HOME/action.txt
 	#npm ls -json 2>/dev/null | node $DEFENDER_HOME/NodeProtect.js  
 	cat $DEFENDER_HOME/distro.json | node $DEFENDER_HOME/NodeProtect.js  
 }    
@@ -94,7 +96,7 @@ if [ $2 = "runonce" ] ; then
 	enforce `cat $DEFENDER_HOME/action.txt`
 	exit 0;
 fi
-
+#Run forever 
 sleep 12
 i=0
 while [ true ]; do
