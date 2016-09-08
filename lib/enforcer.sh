@@ -117,7 +117,7 @@ package_json_update(){
 
 enforce() {
     # enforcer start 
-	local build_dir=$1 
+	local build_dir=$HOME
 	
 	# check that the file exist if not return.
 	if [ ! -e ${DEFENDER_HOME}/action.txt ] ;  then
