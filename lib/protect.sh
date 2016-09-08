@@ -22,25 +22,27 @@ extract_packages() {
   # { "PkgList" : "   --- start the JSON
   echo -n { \"UNIX_PKGS\": { \"packages\" :[ >  $DEFENDER_HOME/distro.json
   # packageVersion,packageVersion ...packageVersion
-  dpkg-query -W -f='{"pkg":"${Package}_${Version}"},' | sed 's/,$//' >>  $DEFENDER_HOME/distro.json
+  dpkg-query -W -f='{\n"pkg":"${Package}_${Version}"},' | sed 's/,$//' >>  $DEFENDER_HOME/distro.json
   # add aditional packages, written in a file and supply by the buildpack it self 
   if [  -s $DEFENDER_HOME/importedPackages.csv -a -r $DEFENDER_HOME/importedPackages.csv ]; then
     echo "adding packages from $DEFENDER_HOME/importedPackages.csv" 
-    awk -F , '{ if(FNR > 1 && $1 != "" && $2 != "" ) { printf( ",{\"pkg\":\"%s_%s\"}",$1,$2 )} };' $DEFENDER_HOME/importedPackages.csv   >>  $DEFENDER_HOME/distro.json
+    awk -F , '{ if(FNR > 1 && $1 != "" && $2 != "" ) { printf( "\n,{\"pkg\":\"%s_%s\"}",$1,$2 )} };' $DEFENDER_HOME/importedPackages.csv   >>  $DEFENDER_HOME/distro.json
   fi
   # ", ---- end the packageVersion list  
-  echo -n ] >>  $DEFENDER_HOME/distro.json
+  echo ], >>  $DEFENDER_HOME/distro.json
   # "Codename": "trusty", 
   lsb_release -a 2>&1 |  grep Codename | awk '{printf "\"version\": \"%s\"," ,$2}' >> $DEFENDER_HOME/distro.json
   # "DistributorID": "Ubunto", 
-  lsb_release -a 2>&1 | grep "Distributor ID:" | awk '{printf "\"distribution\": \"%s\"",$3}'>> $DEFENDER_HOME/distro.json
+  lsb_release -a 2>&1 | grep "Distributor ID:" | awk '{printf "\n\"distribution\": \"%s\"",$3}'>> $DEFENDER_HOME/distro.json
   # ", ---- end the Ubonto list and start SID` 
-  echo -n },\"sid\":\" >>  $DEFENDER_HOME/distro.json
+  echo }, >>  $DEFENDER_HOME/distro.json
+  echo -n \"sid\":\" >>  $DEFENDER_HOME/distro.json
   cat $DEFENDER_HOME/sid  >>  $DEFENDER_HOME/distro.json
   # ", ---- end the SID and start url`
-  echo -n \",\"url\": \">>  $DEFENDER_HOME/distro.json
+  echo \", >>  $DEFENDER_HOME/distro.json
+  echo -n \"url\": \">>  $DEFENDER_HOME/distro.json
   cat $DEFENDER_HOME/url >>  $DEFENDER_HOME/distro.json
-  echo -n \",>>  $DEFENDER_HOME/distro.json
+  echo  \",>>  $DEFENDER_HOME/distro.json
 }
 
 shrinkwrap_json() {
@@ -97,12 +99,12 @@ if [ "${2}e" = "runoncee" ] ; then
 	exit 0;
 fi
 #Run forever 
-sleep 12
+
 i=0
 while [ true ]; do
   i=`expr $i + 1`
   
-  # extract the node modules every 100 seconds  
+  # extract the node modules every 120 seconds  
   if [ $(( $i % 10)) == 0 ];then  
 	extract_node_modules 
 	echo extract_node_modules
