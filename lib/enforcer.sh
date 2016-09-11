@@ -133,8 +133,7 @@ enforce() {
 	fi 
 	echo "Updating the application with $action " 
 	
-	# need to be run at least once 
-	set_a_side_original_node_modules $build_dir
+
 	
 	case "$1" in
         reinstall_packages)
