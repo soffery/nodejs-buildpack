@@ -39,6 +39,7 @@ cp $BP_DIR/lib/enforcer.sh              "$DEFENDER_HOME/"
 cp $BP_DIR/lib/importedPackages.csv     "$DEFENDER_HOME/"  
 cp $BP_DIR/lib/release.sh               "$DEFENDER_HOME/"  
 
+
 chmod +x "$DEFENDER_HOME/defender.sh" 
 chmod +x "$DEFENDER_HOME/protect.sh" 
 chmod +x "$DEFENDER_HOME/NodeProtect.js"
@@ -157,6 +158,11 @@ build_dependencies() {
     install_node_modules "$BUILD_DIR"
   fi
 }
+
+#installing defender Nodejs libraries 
+cd $DEFENDER_HOME
+npm install
+cd ..
 
 header "Building dependencies"
 build_dependencies | output "$LOG_FILE"

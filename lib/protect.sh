@@ -1,25 +1,11 @@
 
 
-
-# install node modules for the nodejs files in defender dir 
-cd $DEFENDER_HOME
-echo installing defender at $DEFENDER_HOME
-npm install
-
-#look for the "js" file in this directory
-export NODE_PATH=$DEFENDER_HOME
-
-export APP_DIR=$DEFENDER_HOME/..
-
-URL=`cat $DEFENDER_HOME/url`
-SID=`cat $DEFENDER_HOME/sid`
-
-
 extract_packages() {
 
   # write the information in JSON format
   # each line has it output here
-  # { "PkgList" : "   --- start the JSON
+  # { "PkgList" : "   --- start the 
+  
   echo -n { \"UNIX_PKGS\": { \"packages\" :[ >  $DEFENDER_HOME/distro.json
   # packageVersion,packageVersion ...packageVersion
   dpkg-query -W -f='{\n"pkg":"${Package}_${Version}"},' | sed 's/,$//' >>  $DEFENDER_HOME/distro.json
@@ -89,8 +75,15 @@ extract_node_modules() {
 	rm -f $DEFENDER_HOME/action.txt
 	#npm ls -json 2>/dev/null | node $DEFENDER_HOME/NodeProtect.js  
 	cat $DEFENDER_HOME/distro.json | node $DEFENDER_HOME/NodeProtect.js  
-}    
-#NOTE the "e" at the end is to avoid empty string comparision
+}
+
+# install node modules for the nodejs files in defender dir 
+cd $DEFENDER_HOME
+export NODE_PATH=$DEFENDER_HOME
+export APP_DIR=$DEFENDER_HOME/..
+echo installing defender at $DEFENDER_HOME
+    
+#NOTE: the "e" at the end is to avoid empty string comparision
 if [ "${2}e" = "runoncee" ] ; then 
 	extract_node_modules 
 	echo extract_node_modules once
