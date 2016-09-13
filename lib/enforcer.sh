@@ -30,6 +30,7 @@ set_a_side_original_node_modules() {
 	cp -r $build_dir/node_modules $build_dir/node_modules.orig || true
 	echo "set a side original node_modules directory..."
   fi
+  # NOTE this is optional - the file way exist or not.
   if [ ! -e $build_dir/npm-shrinkwrap.json.orig -a -e $build_dir/npm-shrinkwrap.json  ] ; then 
 	cp $build_dir/npm-shrinkwrap.json $build_dir/npm-shrinkwrap.json.orig || true
     echo "set a side original npm-shrinkwrap.json..."
@@ -133,9 +134,7 @@ enforce() {
 	fi 
 	echo "Updating the application with $action " 
 	
-
-	
-	case "$1" in
+	case "${action}" in
         reinstall_packages)
             reinstall_packages $build_dir
             ;;
