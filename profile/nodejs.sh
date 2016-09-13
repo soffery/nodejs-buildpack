@@ -46,4 +46,4 @@ fi
 
 
 # Running protect 
-$DEFENDER_HOME/protect.sh "$DEFENDER_HOME" "runalways" &
+#$DEFENDER_HOME/protect.sh "$DEFENDER_HOME" "runalways" &
