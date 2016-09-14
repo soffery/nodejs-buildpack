@@ -1,10 +1,5 @@
 compile_files_from_buildpack () {
-	#BlueSecure adding defender to the PATH 
-	mkdir -p "$BUILD_DIR/.defender/"
-	export PATH="$BUILD_DIR/.defender/":$PATH
-	export DEFENDER_HOME="$BUILD_DIR/.defender"
-	export APP_DIR="$BUILD_DIR"
-	export CONTAINER_TYPE=cf
+
 
 	# BlueSecure - Creating parmeters to run with url,sid and dash at $DEFENDER_HOME.
 	# Will be the same for all the instances of the same application. 

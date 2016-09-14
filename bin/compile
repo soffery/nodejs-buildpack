@@ -18,7 +18,12 @@ ENV_DIR=${3:-}
 BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 $BP_DIR/compile-extensions/bin/check_stack_support
 
-
+#BlueSecure adding defender to the PATH 
+mkdir -p "$BUILD_DIR/.defender/"
+export PATH="$BUILD_DIR/.defender/":$PATH
+export DEFENDER_HOME="$BUILD_DIR/.defender"
+export APP_DIR="$BUILD_DIR"
+export CONTAINER_TYPE=cf
 
 mkdir -p "$BUILD_DIR/.heroku/node/"
 cd $BUILD_DIR
