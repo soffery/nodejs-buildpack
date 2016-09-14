@@ -26,7 +26,10 @@ ADD trigger /usr/bin
 ################### Adding package managment / enforcment ##################
 RUN mkdir -p /app/.defender
 ENV DEFENDER_HOME=/app/.defender
+ENV APP_DIR=/app
+ENV CONTAINER_TYPE=docker
 ENV VCAP_APPLICATION='{"limits":{"fds":16384,"mem":1024,"disk":1024},"application_name":"TerminalApp","application_uris":["terminalapp.mybluemix.net"],"name":"TerminalApp","space_name":"soffery_dev","space_id":"24177892-5067-4806-8897-2414cc2a36ae","uris":["terminalapp.mybluemix.net"],"users":null,"version":"1a46d628-7a6f-41ea-8a69-4f02431a2b51","application_version":"1a46d628-7a6f-41ea-8a69-4f02431a2b51","application_id":"f2d51ac7-5ff5-4b02-90ec-3729d87dc15e","instance_id":"7b6503775d374a3aa278362a702d8eba","instance_index":0,"host":"0.0.0.0","port":63103,"started_at":"2016-08-22 10:25:39 +0000","started_at_timestamp":1471861539,"start":"2016-08-22 10:25:39 +0000","state_timestamp":1471861539}'
+
 
 # NOTE: better solution would be with a softlink  
 ONBUILD RUN bash -c "ln -sf /etc/defender/sid  /app/.defender/sid" 

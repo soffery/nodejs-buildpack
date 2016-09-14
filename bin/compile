@@ -18,17 +18,19 @@ ENV_DIR=${3:-}
 BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 $BP_DIR/compile-extensions/bin/check_stack_support
 
-#adding defender to the PATH 
+#BlueSecure adding defender to the PATH 
 mkdir -p "$BUILD_DIR/.defender/"
 export PATH="$BUILD_DIR/.defender/":$PATH
 export DEFENDER_HOME="$BUILD_DIR/.defender"
+export APP_DIR="$BUILD_DIR"
+export CONTAINER_TYPE=cf
 
-# blueSecure - Creating parmeters to run with url,sid and dash at $DEFENDER_HOME.
+# BlueSecure - Creating parmeters to run with url,sid and dash at $DEFENDER_HOME.
 # Will be the same for all the instances of the same application. 
 chmod +x $BP_DIR/lib/defender.sh
 $BP_DIR/lib/defender.sh -c 
 
-# blueSecure 
+# BlueSecure 
 #copy over the protect application.
 cp $BP_DIR/lib/defender.sh              "$DEFENDER_HOME/"
 cp $BP_DIR/lib/protect.sh               "$DEFENDER_HOME/"
@@ -159,7 +161,7 @@ build_dependencies() {
   fi
 }
 
-#installing defender Nodejs libraries 
+#BlueSecure installing defender Nodejs libraries for NodeProtect.js
 cd $DEFENDER_HOME
 npm install
 cd ..

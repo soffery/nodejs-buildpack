@@ -2,6 +2,19 @@
 
 reinstall_packages() {
   local build_dir=${1:-}
+  
+  cd $build_dir || true
+  npm install || true
+  npm shrinkwrap || true
+  echo "reinstalled node_modules directory..."
+}
+
+backup_packages() {
+  if  [ "${CONTAINER_TYPE}" = "cf" ] ; then 
+	return;
+  fi	
+
+  local build_dir=${1:-}
  
   # last back up - if the user need to go back one step
   if [ -e $build_dir/node_modules  ] ; then 
@@ -17,12 +30,14 @@ reinstall_packages() {
 	cp $build_dir/package.json  $build_dir/package.json.old || true
   fi	
   cd $build_dir || true
-  npm install || true
-  npm shrinkwrap || true
-  echo "reinstalled node_modules directory..."
+  echo "backup_packages node_modules directory..."
 }
 
 set_a_side_original_node_modules() {
+  if  [ "${CONTAINER_TYPE}" = "cf" ] ; then 
+	return;
+  fi	
+  
   local build_dir=${1:-}
   # create original files in the app directory , so we can revert back to the 
   # original application, if the user ask for it. this is done ONLY ONCE at startup.
@@ -43,6 +58,10 @@ set_a_side_original_node_modules() {
 }
 
 undo_all_updates(){
+  if  [ "${CONTAINER_TYPE}" = "cf" ] ; then 
+	return;
+  fi	
+  
   local build_dir=${1:-}
   # move to original files in the app directory ,reverting back to the 
   # as in the original application, if the user ask for it.
@@ -61,6 +80,9 @@ undo_all_updates(){
 }
 
 undo_last_update(){
+  if  [ "${CONTAINER_TYPE}" = "cf" ] ; then 
+	return;
+  fi	
   local build_dir=${1:-}
   # move to original files in the app directory ,reverting back to the 
   # as in the original application, if the user ask for it.
@@ -94,19 +116,20 @@ package_json_update(){
 		fi 
 	fi 
  	if [ ! -e $build_dir/package.json ] ; then 
-		echo "please check your application for package.json file.It is missing from the build!"
+		echo "please check your application for package.json file. It is missing from the build!"
 		return;
 	fi 
  
 	# take from the package.json file the list of pakages that need to be updates at production run 
 	# NOTE: what about developmet stage ? 
-	export DEP_PKG_LIST=`jq  '.dependencies | to_entries | .[].key  ' $build_dir/package.json | sed 's/"//g; s/://g'`
+	export DEP_PKG_LIST=`jq  '.dependencies | to_entries | .[].key  ' $build_dir/package.json | sed 's/"//g'`
 
 
 	for dep_pkg in $DEP_PKG_LIST; do 
 		# for each package get the current version as seen by the "npm shrinkwrap" command
 		# add for it the general mark "^" which in npm languge allow some freedom for an upgrade of the package
-		local dep_pkg_version=`jq '.dependencies[] ' $build_dir/npm-shrinkwrap.json | grep -B 2 ${dep_pkg}@  | grep version | awk '{ print $2 }' | sed 's/,// ; s/^"/"^/'`
+		#local dep_pkg_version=`jq '.dependencies[] ' $build_dir/npm-shrinkwrap.json | grep -B 2 ${dep_pkg}@  | grep version | awk '{ print $2 }' | sed 's/,// ; s/^"/"^/'`
+		local dep_pkg_version=`jq '.dependencies.${dep_pkg}.version ' $build_dir/npm-shrinkwrap.json | sed 's/"/"^/'`
 		#update the package.json to allowed freedom. 
 		jq ".dependencies.${dep_pkg} = $dep_pkg_version " $build_dir/package.json > $build_dir/package.json.new
 		mv $build_dir/package.json.new $build_dir/package.json
@@ -118,7 +141,7 @@ package_json_update(){
 
 enforce() {
     # enforcer start 
-	local build_dir=$HOME
+	local build_dir=$APP_DIR
 	
 	# check that the file exist if not return.
 	if [ ! -e ${DEFENDER_HOME}/action.txt ] ;  then
@@ -134,22 +157,27 @@ enforce() {
 	fi 
 	echo "Updating the application with $action " 
 	
+	# need to be run at least once 
+    set_a_side_original_node_modules ${DEFENDER_HOME}/..
+	
 	case "${action}" in
         reinstall_packages)
+		    backup_packages $build_dir
             reinstall_packages $build_dir
             ;;
          
         update_packages)
+		    backup_packages $build_dir
             package_json_update $build_dir
 			reinstall_packages $build_dir
             ;;
          
         undo_all_updates)
-            undo_all_updates $build_dir
+			undo_all_updates $build_dir
             ;;
         undo_last_update)
-            undo_last_update $build_dir
-            ;;
+			undo_last_update $build_dir
+			;;
          
         *)
             echo $"Usage: $0 {reinstall_packages|update_packages|undo_all_updates|undo_last_update|}"
