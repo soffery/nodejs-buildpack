@@ -113,7 +113,9 @@ package_json_update(){
 		fi
 		# try to create the file if it does not exist 
 		if [ ! -e $build_dir/npm-shrinkwrap.json ] ; then 
-			echo "could not create the npm-shrinkwrap.json ..."
+		    echo  "This is the dir $build_dir "
+			echo `ls -l`
+			echo "could not create the npm-shrinkwrap.json ... $PWD"
 			return;
 		fi 
 	fi 
