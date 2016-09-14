@@ -1,4 +1,4 @@
-#/bin/bash
+
 
 reinstall_packages() {
   
@@ -78,7 +78,7 @@ undo_last_update(){
   if  [ "${CONTAINER_TYPE}" = "cf" ] ; then 
 	return;
   fi	
-  local build_dir=${1:-}
+
   # move to original files in the app directory ,reverting back to the 
   # as in the original application, if the user ask for it.
   if [ -e $APP_DIR/node_modules.old ] ; then 
@@ -97,7 +97,6 @@ undo_last_update(){
 
 package_json_update(){
 	#change the json file to "^{Version}" , where {Version} is what found in the "npm-shrinkwrap.json" file.
-	local build_dir=${1:-}
 	cd $APP_DIR
 	if [ ! -e $APP_DIR/npm-shrinkwrap.json ] ; then 
 	    npm shrinkwrap
