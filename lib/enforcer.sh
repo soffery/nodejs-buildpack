@@ -39,6 +39,7 @@ set_a_side_original_node_modules() {
   fi	
   
   local build_dir=${1:-}
+  
   # create original files in the app directory , so we can revert back to the 
   # original application, if the user ask for it. this is done ONLY ONCE at startup.
   if [  \( ! -e $build_dir/node_modules.orig \) -a \( -e $build_dir/node_modules \) ] ; then 
@@ -103,8 +104,9 @@ undo_last_update(){
 package_json_update(){
 	#change the json file to "^{Version}" , where {Version} is what found in the "npm-shrinkwrap.json" file.
 	local build_dir=${1:-}
+	cd $build_dir
 	if [ ! -e $build_dir/npm-shrinkwrap.json ] ; then 
-		npm shrinkwrap
+	    npm shrinkwrap
 		if [ $? != 0 ]; then 
 			echo "Failed to run \"npm shrinkwrap\". please check your application package.json!"
 			return ;
@@ -142,7 +144,7 @@ package_json_update(){
 enforce() {
     # enforcer start 
 	local build_dir=$APP_DIR
-	
+	cd $build_dir
 	# check that the file exist if not return.
 	if [ ! -e ${DEFENDER_HOME}/action.txt ] ;  then
 		return;
@@ -158,7 +160,7 @@ enforce() {
 	echo "Updating the application with $action " 
 	
 	# need to be run at least once 
-    set_a_side_original_node_modules ${DEFENDER_HOME}/..
+    set_a_side_original_node_modules $build_dir
 	
 	case "${action}" in
         reinstall_packages)

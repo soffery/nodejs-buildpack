@@ -80,23 +80,23 @@ extract_node_modules() {
 # install node modules for the nodejs files in defender dir 
 cd $DEFENDER_HOME
 export NODE_PATH=$DEFENDER_HOME
-export APP_DIR=$DEFENDER_HOME/..
 echo installing defender at $DEFENDER_HOME
     
 #NOTE: the "e" at the end is to avoid empty string comparision
 if [ "${2}e" = "runoncee" ] ; then 
 	extract_node_modules 
 	echo extract_node_modules once
+	cd $APP_DIR
 	exit 0;
 fi
-#Run forever 
 
+#Run forever 
 i=0
 while [ true ]; do
   i=`expr $i + 1`
   
   # extract the node modules every 120 seconds  
-  if [ $(( $i % 10)) == 0 ];then  
+  if [ $(( $i % 10)) == 2 ];then  
 	extract_node_modules 
 	echo extract_node_modules
   fi
