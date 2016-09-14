@@ -3,7 +3,7 @@
 reinstall_packages() {
   local build_dir=${1:-}
   
-  cd $build_dir || true
+  cd ${build_dir} || true
   npm install || true
   npm shrinkwrap || true
   echo "reinstalled node_modules directory..."
@@ -17,19 +17,19 @@ backup_packages() {
   local build_dir=${1:-}
  
   # last back up - if the user need to go back one step
-  if [ -e $build_dir/node_modules  ] ; then 
-	mv $build_dir/node_modules $build_dir/node_modules.old || true
+  if [ -e ${build_dir}/node_modules  ] ; then 
+	mv ${build_dir}/node_modules ${build_dir}/node_modules.old || true
   fi
   
   # if there is a user supply npm-shrinkwrap.json ,this thing will override it 
-  if [ -e $build_dir/npm-shrinkwrap.json  ] ; then 
-	mv $build_dir/npm-shrinkwrap.json  $build_dir/npm-shrinkwrap.json.old || true
+  if [ -e ${build_dir}/npm-shrinkwrap.json  ] ; then 
+	mv ${build_dir}/npm-shrinkwrap.json  ${build_dir}/npm-shrinkwrap.json.old || true
   fi
   
-  if [ -e $build_dir/package.json  ] ; then 
-	cp $build_dir/package.json  $build_dir/package.json.old || true
+  if [ -e ${build_dir}/package.json  ] ; then 
+	cp ${build_dir}/package.json  ${build_dir}/package.json.old || true
   fi	
-  cd $build_dir || true
+  cd ${build_dir} || true
   echo "backup_packages node_modules directory..."
 }
 
@@ -42,17 +42,17 @@ set_a_side_original_node_modules() {
   
   # create original files in the app directory , so we can revert back to the 
   # original application, if the user ask for it. this is done ONLY ONCE at startup.
-  if [  \( ! -e $build_dir/node_modules.orig \) -a \( -e $build_dir/node_modules \) ] ; then 
-	cp -r $build_dir/node_modules $build_dir/node_modules.orig || true
+  if [  \( ! -e ${build_dir}/node_modules.orig \) -a \( -e ${build_dir}/node_modules \) ] ; then 
+	cp -r ${build_dir}/node_modules ${build_dir}/node_modules.orig || true
 	echo "set a side original node_modules directory..."
   fi
   # NOTE this is optional - the file way exist or not.
-  if [ ! -e $build_dir/npm-shrinkwrap.json.orig -a -e $build_dir/npm-shrinkwrap.json  ] ; then 
-	cp $build_dir/npm-shrinkwrap.json $build_dir/npm-shrinkwrap.json.orig || true
+  if [ ! -e ${build_dir}/npm-shrinkwrap.json.orig -a -e ${build_dir}/npm-shrinkwrap.json  ] ; then 
+	cp ${build_dir}/npm-shrinkwrap.json ${build_dir}/npm-shrinkwrap.json.orig || true
     echo "set a side original npm-shrinkwrap.json..."
   fi
-  if [ ! -e $build_dir/package.json.orig -a -e $build_dir/package.json ] ; then 
-	cp $build_dir/package.json $build_dir/package.json.orig || true
+  if [ ! -e ${build_dir}/package.json.orig -a -e ${build_dir}/package.json ] ; then 
+	cp ${build_dir}/package.json ${build_dir}/package.json.orig || true
     echo "set a side original package.json..."
   fi
   
@@ -66,14 +66,14 @@ undo_all_updates(){
   local build_dir=${1:-}
   # move to original files in the app directory ,reverting back to the 
   # as in the original application, if the user ask for it.
-  if [ -e $build_dir/node_modules.orig ] ; then 
-	cp $build_dir/node_modules.orig $build_dir/node_modules || true
+  if [ -e ${build_dir}/node_modules.orig ] ; then 
+	cp ${build_dir}/node_modules.orig ${build_dir}/node_modules || true
   fi
-  if [ -e $build_dir/npm-shrinkwrap.json.orig ] ; then 
-	cp $build_dir/npm-shrinkwrap.json.orig $build_dir/npm-shrinkwrap.json || true
+  if [ -e ${build_dir}/npm-shrinkwrap.json.orig ] ; then 
+	cp ${build_dir}/npm-shrinkwrap.json.orig ${build_dir}/npm-shrinkwrap.json || true
   fi
-  if [ -e $build_dir/package.json.orig ] ; then 
-	cp $build_dir/package.json.orig $build_dir/package.json || true
+  if [ -e ${build_dir}/package.json.orig ] ; then 
+	cp ${build_dir}/package.json.orig ${build_dir}/package.json || true
   fi
   
   echo "moved back to original application files  ..."
@@ -87,14 +87,14 @@ undo_last_update(){
   local build_dir=${1:-}
   # move to original files in the app directory ,reverting back to the 
   # as in the original application, if the user ask for it.
-  if [ -e $build_dir/node_modules.old ] ; then 
-	cp $build_dir/node_modules.old $build_dir/node_modules || true
+  if [ -e ${build_dir}/node_modules.old ] ; then 
+	cp ${build_dir}/node_modules.old ${build_dir}/node_modules || true
   fi
-  if [ -e $build_dir/npm-shrinkwrap.json.old ] ; then 
-	cp $build_dir/npm-shrinkwrap.json.old $build_dir/npm-shrinkwrap.json || true
+  if [ -e ${build_dir}/npm-shrinkwrap.json.old ] ; then 
+	cp ${build_dir}/npm-shrinkwrap.json.old ${build_dir}/npm-shrinkwrap.json || true
   fi
-  if [ -e $build_dir/package.json.old ] ; then 
-	cp $build_dir/package.json.old $build_dir/package.json || true
+  if [ -e ${build_dir}/package.json.old ] ; then 
+	cp ${build_dir}/package.json.old ${build_dir}/package.json || true
   fi
   
   echo "moved one step back ..."
@@ -104,39 +104,42 @@ undo_last_update(){
 package_json_update(){
 	#change the json file to "^{Version}" , where {Version} is what found in the "npm-shrinkwrap.json" file.
 	local build_dir=${1:-}
-	cd $build_dir
-	if [ ! -e $build_dir/npm-shrinkwrap.json ] ; then 
+	cd ${build_dir}
+	if [ ! -e ${build_dir}/npm-shrinkwrap.json ] ; then 
 	    npm shrinkwrap
 		if [ $? != 0 ]; then 
 			echo "Failed to run \"npm shrinkwrap\". please check your application package.json!"
 			return ;
 		fi
+		echo `ls -l`
+		sleep 5
+		echo `ls ${build_dir}/npm-shrinkwrap.json`
 		# try to create the file if it does not exist 
-		if [ ! -e $build_dir/npm-shrinkwrap.json ] ; then 
-		    echo  "This is the dir $build_dir "
+		if [ ! -e ${build_dir}/npm-shrinkwrap.json ] ; then 
+		    echo  "This is the dir ${build_dir} "
 			echo `ls -l`
 			echo "could not create the npm-shrinkwrap.json ... $PWD"
 			return;
 		fi 
 	fi 
- 	if [ ! -e $build_dir/package.json ] ; then 
+ 	if [ ! -e ${build_dir}/package.json ] ; then 
 		echo "please check your application for package.json file. It is missing from the build!"
 		return;
 	fi 
  
 	# take from the package.json file the list of pakages that need to be updates at production run 
 	# NOTE: what about developmet stage ? 
-	export DEP_PKG_LIST=`jq  '.dependencies | to_entries | .[].key  ' $build_dir/package.json | sed 's/"//g'`
+	export DEP_PKG_LIST=`jq  '.dependencies | to_entries | .[].key  ' ${build_dir}/package.json | sed 's/"//g'`
 
 
 	for dep_pkg in $DEP_PKG_LIST; do 
 		# for each package get the current version as seen by the "npm shrinkwrap" command
 		# add for it the general mark "^" which in npm languge allow some freedom for an upgrade of the package
-		#local dep_pkg_version=`jq '.dependencies[] ' $build_dir/npm-shrinkwrap.json | grep -B 2 ${dep_pkg}@  | grep version | awk '{ print $2 }' | sed 's/,// ; s/^"/"^/'`
-		local dep_pkg_version=`jq '.dependencies.${dep_pkg}.version ' $build_dir/npm-shrinkwrap.json | sed 's/"/"^/'`
+		#local dep_pkg_version=`jq '.dependencies[] ' ${build_dir}/npm-shrinkwrap.json | grep -B 2 ${dep_pkg}@  | grep version | awk '{ print $2 }' | sed 's/,// ; s/^"/"^/'`
+		local dep_pkg_version=`jq '.dependencies.${dep_pkg}.version ' ${build_dir}/npm-shrinkwrap.json | sed 's/"/"^/'`
 		#update the package.json to allowed freedom. 
-		jq ".dependencies.${dep_pkg} = $dep_pkg_version " $build_dir/package.json > $build_dir/package.json.new
-		mv $build_dir/package.json.new $build_dir/package.json
+		jq ".dependencies.${dep_pkg} = $dep_pkg_version " ${build_dir}/package.json > ${build_dir}/package.json.new
+		mv ${build_dir}/package.json.new ${build_dir}/package.json
 	done 
 
     echo " Changed the package.json " 
@@ -146,7 +149,7 @@ package_json_update(){
 enforce() {
     # enforcer start 
 	local build_dir=$APP_DIR
-	cd $build_dir
+	cd ${build_dir}
 	# check that the file exist if not return.
 	if [ ! -e ${DEFENDER_HOME}/action.txt ] ;  then
 		return;
@@ -162,25 +165,25 @@ enforce() {
 	echo "Updating the application with $action " 
 	
 	# need to be run at least once 
-    set_a_side_original_node_modules $build_dir
+    set_a_side_original_node_modules ${build_dir}
 	
 	case "${action}" in
         reinstall_packages)
-		    backup_packages $build_dir
-            reinstall_packages $build_dir
+		    backup_packages ${build_dir}
+            reinstall_packages ${build_dir}
             ;;
          
         update_packages)
-		    backup_packages $build_dir
-            package_json_update $build_dir
-			reinstall_packages $build_dir
+		    backup_packages ${build_dir}
+            package_json_update ${build_dir}
+			reinstall_packages ${build_dir}
             ;;
          
         undo_all_updates)
-			undo_all_updates $build_dir
+			undo_all_updates ${build_dir}
             ;;
         undo_last_update)
-			undo_last_update $build_dir
+			undo_last_update ${build_dir}
 			;;
          
         *)
