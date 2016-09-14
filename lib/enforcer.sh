@@ -130,7 +130,7 @@ package_json_update(){
 		# for each package get the current version as seen by the "npm shrinkwrap" command
 		# add for it the general mark "^" which in npm languge allow some freedom for an upgrade of the package
 		#local dep_pkg_version=`jq '.dependencies[] ' $APP_DIR/npm-shrinkwrap.json | grep -B 2 ${dep_pkg}@  | grep version | awk '{ print $2 }' | sed 's/,// ; s/^"/"^/'`
-		local dep_pkg_version=`jq '.dependencies.${dep_pkg}.version ' $APP_DIR/npm-shrinkwrap.json | sed 's/"/"^/'`
+		local dep_pkg_version=`jq ".dependencies.${dep_pkg}.version " $APP_DIR/npm-shrinkwrap.json | sed 's/"/"^/'`
 		#update the package.json to allowed freedom. 
 		jq ".dependencies.${dep_pkg} = $dep_pkg_version " $APP_DIR/package.json > $APP_DIR/package.json.new
 		mv $APP_DIR/package.json.new $APP_DIR/package.json
