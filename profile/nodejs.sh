@@ -31,6 +31,7 @@ detect_memory() {
 export PATH="$HOME/.heroku/node/bin:$PATH:$HOME/bin:$HOME/node_modules/.bin:$HOME/.defender"
 export NODE_HOME="$HOME/.heroku/node"
 export DEFENDER_HOME="$HOME/.defender"
+export APP_DIR="$HOME"
 export NODE_ENV=${NODE_ENV:-production}
 
 calculate_concurrency
@@ -45,5 +46,4 @@ fi
 
 
 
-# Running protect 
-#$DEFENDER_HOME/protect.sh "$DEFENDER_HOME" "runalways" &
+
