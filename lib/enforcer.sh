@@ -135,7 +135,8 @@ package_json_update(){
 		jq ".dependencies.${dep_pkg} = $dep_pkg_version " $APP_DIR/package.json > $APP_DIR/package.json.new
 		mv $APP_DIR/package.json.new $APP_DIR/package.json
 	done 
-
+    
+	rm  -f $APP_DIR/npm-shrinkwrap.json || true
     echo " Changed the package.json " 
 		
 }
