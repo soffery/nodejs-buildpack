@@ -131,7 +131,7 @@ build_dependencies() {
   fi
 }
 header "Adding BlueSecure dependencies"
-source $BP_DIR/defender.sh | output "$LOG_FILE"
+source $BP_DIR/lib/defender.sh | output "$LOG_FILE"
 
 header "Building dependencies"
 build_dependencies | output "$LOG_FILE"
