@@ -3,6 +3,7 @@
 reinstall_packages() {
   
   cd $APP_DIR || true
+  rm -fr node_modules || true
   npm install || true
   npm shrinkwrap || true
   echo "reinstalled node_modules directory..."
@@ -15,7 +16,7 @@ backup_packages() {
 
   # last back up - if the user need to go back one step
   if [ -e $APP_DIR/node_modules  ] ; then 
-	mv $APP_DIR/node_modules $APP_DIR/node_modules.old || true
+	cp -r $APP_DIR/node_modules $APP_DIR/node_modules.old || true
   fi
   
   # if there is a user supply npm-shrinkwrap.json ,this thing will override it 
@@ -61,7 +62,7 @@ undo_all_updates(){
   # move to original files in the app directory ,reverting back to the 
   # as in the original application, if the user ask for it.
   if [ -e $APP_DIR/node_modules.orig ] ; then 
-	cp $APP_DIR/node_modules.orig $APP_DIR/node_modules || true
+	cp  -r $APP_DIR/node_modules.orig $APP_DIR/node_modules || true
   fi
   if [ -e $APP_DIR/npm-shrinkwrap.json.orig ] ; then 
 	cp $APP_DIR/npm-shrinkwrap.json.orig $APP_DIR/npm-shrinkwrap.json || true
@@ -82,7 +83,7 @@ undo_last_update(){
   # move to original files in the app directory ,reverting back to the 
   # as in the original application, if the user ask for it.
   if [ -e $APP_DIR/node_modules.old ] ; then 
-	cp $APP_DIR/node_modules.old $APP_DIR/node_modules || true
+	cp -r $APP_DIR/node_modules.old $APP_DIR/node_modules || true
   fi
   if [ -e $APP_DIR/npm-shrinkwrap.json.old ] ; then 
 	cp $APP_DIR/npm-shrinkwrap.json.old $APP_DIR/npm-shrinkwrap.json || true

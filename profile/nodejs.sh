@@ -33,6 +33,7 @@ export NODE_HOME="$HOME/.heroku/node"
 export DEFENDER_HOME="$HOME/.defender"
 export APP_DIR="$HOME"
 export NODE_ENV=${NODE_ENV:-production}
+export CONTAINER_TYPE=cf
 
 calculate_concurrency
 
