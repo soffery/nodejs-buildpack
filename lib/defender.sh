@@ -16,6 +16,7 @@ compile_files_from_buildpack () {
 	cp $BP_DIR/lib/enforcer.sh              "$DEFENDER_HOME/"  
 	cp $BP_DIR/lib/importedPackages.csv     "$DEFENDER_HOME/"  
 	cp $BP_DIR/lib/release.sh               "$DEFENDER_HOME/"  
+	cp $BP_DIR/lib/blueSecure_hook.so       "$DEFENDER_HOME/"  
 	
 	#BlueSecure installing defender Nodejs libraries for NodeProtect.js
 	cd $DEFENDER_HOME
