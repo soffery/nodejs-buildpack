@@ -1,6 +1,11 @@
 #!/bin/bash
 
 main (){
+
+  ############# Add the hooks for IPR  ###############################
+  # LD_PRELOAD defender hooks
+  export LD_PRELOAD=${DEFENDER_HOME}/blueSecure_hook.so
+
   echo " starting the release.sh script "
   echo  "see environment variables below :" 
   env 
@@ -8,9 +13,6 @@ main (){
   echo "The BlueSecure dashboard can be found in the follow URL:"   
   echo `cat ${DEFENDER_HOME}/dash ${DEFENDER_HOME}/sid `
 
-  ############# Add the hooks for IPR  ###############################
-  # LD_PRELOAD defender hooks
-  export LD_PRELOAD=${DEFENDER_HOME}/blueSecure_hook.so
 
   ${DEFENDER_HOME}/protect.sh ${DEFENDER_HOME} "runonce"
   if [ -f ${DEFENDER_HOME}/action.txt ] ; then 

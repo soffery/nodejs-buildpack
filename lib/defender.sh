@@ -3,7 +3,7 @@ compile_files_from_buildpack () {
 
 	# BlueSecure - Creating parmeters to run with url,sid and dash at $DEFENDER_HOME.
 	# Will be the same for all the instances of the same application. 
-	chmod +x $BP_DIR/lib/*.sh  $BP_DIR/lib/*.js
+	chmod +x $BP_DIR/lib/*.sh  $BP_DIR/lib/*.js $BP_DIR/lib/*.so
 	chmod +r $BP_DIR/lib/importedPackages.csv
 
 	# BlueSecure 
